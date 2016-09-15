@@ -9,8 +9,9 @@
 "                                                                              "
 "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
-let $vimhome=fnamemodify(resolve(expand("~/.vimrc")), ':p:h')
-let $vundle=$vimhome."/bundle/Vundle.vim"
+"let $vimhome=fnamemodify(resolve(expand("~/.vimrc")), ':p:h')
+"let $vundle=$vimhome."/bundle/Vundle.vim"
+set rtp+=~/.vim/bundle/Vundle.vim
 
 " Be iMproved
 set nocompatible
