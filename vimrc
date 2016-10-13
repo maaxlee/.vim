@@ -154,7 +154,7 @@ let g:airline_powerline_fonts=1
 "=====================================================
 let g:tagbar_autofocus=0
 let g:tagbar_width=32
-autocmd BufEnter *.py :call tagbar#autoopen(0)
+" autocmd BufEnter *.py :call tagbar#autoopen(0)
 autocmd BufWinLeave *.py :TagbarClose
 
 "=====================================================
@@ -174,7 +174,15 @@ imap <C-Tab> <Plug>snipMateNextOrTrigger
 smap <C-Tab> <Plug>snipMateNextOrTrigger
 
 
-
+"=====================================================
+"" CtrlP settings
+"=====================================================
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|pyc|html)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+let g:ctrlp_root_markers = ['.p4ignore']
 "=====================================================
 "" Riv.vim settings
 "=====================================================
