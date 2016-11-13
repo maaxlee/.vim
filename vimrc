@@ -56,6 +56,7 @@ call vundle#begin()
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plugin 'tpope/vim-fugitive'
     Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
+    Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
 
 call vundle#end()                           " required
 filetype on
@@ -194,6 +195,9 @@ let g:ctrlp_root_markers = ['.p4ignore']
 
 " omnicomplete
 set completeopt-=preview                    " remove omnicompletion dropdown
+
+" virtualenv settings
+let g:virtualenv_directory = '~/venv'
 
 " python executables for different plugins
 let g:pymode_python='python'
