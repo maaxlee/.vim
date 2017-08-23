@@ -37,24 +37,24 @@ call vundle#begin()
     Plugin 'flazz/vim-colorschemes'             " Colorschemes
 
     "-------------------=== Snippets support ===--------------------
-   Plugin 'garbas/vim-snipmate'                " Snippets manager
-   Plugin 'MarcWeber/vim-addon-mw-utils'       " dependencies #1
-   Plugin 'tomtom/tlib_vim'                    " dependencies #2
-   Plugin 'honza/vim-snippets'                 " snippets repo
+   " Plugin 'garbas/vim-snipmate'                " Snippets manager
+   " Plugin 'MarcWeber/vim-addon-mw-utils'       " dependencies #1
+   " Plugin 'tomtom/tlib_vim'                    " dependencies #2
+   " Plugin 'honza/vim-snippets'                 " snippets repo
 
 
     "-------------------=== Python  ===-----------------------------
     Plugin 'klen/python-mode'                   " Python mode (docs, refactor, lints...)
-    Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
+    " Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
     Plugin 'scrooloose/syntastic'               " Syntax checking plugin for Vim
     Plugin 'mfukar/robotframework-vim'          " Robotframework support
-    Plugin 'airblade/vim-gitgutter'             " ????
+    Plugin 'airblade/vim-gitgutter'             " Shows diff for Git
 
     Plugin 'mileszs/ack.vim'                    " Grep find throug the project
     Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
     Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    Plugin 'tpope/vim-fugitive'
+    " Plugin 'tpope/vim-fugitive'
     Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
     Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
 
@@ -169,10 +169,10 @@ nmap <F5> :NERDTreeToggle<CR>
 "=====================================================
 "" SnipMate settings
 "=====================================================
-let g:snippets_dir='~/.vim/vim-snippets/snippets'
+" let g:snippets_dir='~/.vim/vim-snippets/snippets'
 " snippets remap
-imap <C-Tab> <Plug>snipMateNextOrTrigger
-smap <C-Tab> <Plug>snipMateNextOrTrigger
+" imap <C-Tab> <Plug>snipMateNextOrTrigger
+" smap <C-Tab> <Plug>snipMateNextOrTrigger
 
 
 "=====================================================
@@ -180,10 +180,10 @@ smap <C-Tab> <Plug>snipMateNextOrTrigger
 "=====================================================
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll|pyc|html)$',
+  \ 'file': '\v\.(exe|so|dll|pyc|html|log|txt)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
-let g:ctrlp_root_markers = ['.p4ignore']
+let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 "=====================================================
 "" Riv.vim settings
 "=====================================================
@@ -202,30 +202,31 @@ let g:virtualenv_directory = '~/venv'
 " python executables for different plugins
 let g:pymode_python='python'
 let g:syntastic_python_python_exec='python'
-let g:jedi#force_py_version=2
+" let g:jedi#force_py_version=2
 
 " supertab to work with Jedi-vim autocomletion
-autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+" autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 " let g:SuperTabDefaultCompletionType = "context"
 
 " rope
-let g:pymode_rope=0
-let g:pymode_rope_completion=0
-let g:pymode_rope_complete_on_dot=0
-let g:pymode_rope_auto_project=0
+let g:pymode_rope=1
+let g:pymode_rope_completion=1
+let g:pymode_rope_complete_on_dot=1
+let g:pymode_rope_auto_project=1
 let g:pymode_rope_enable_autoimport=0
-let g:pymode_rope_autoimport_generate=0
-let g:pymode_rope_guess_project=0
+let g:pymode_rope_autoimport_generate=1
+let g:pymode_rope_guess_project=1
 
 " documentation
-let g:pymode_doc=0
+let g:pymode_doc=1
 let g:pymode_doc_key='K'
 
 " lints
-let g:pymode_lint=0
+let g:pymode_lint=1
 
 " virtualenv
 let g:pymode_virtualenv=1
+let g:pymode_virtualenv_path = '~/venv' 
 
 " breakpoints
 let g:pymode_breakpoint=1
@@ -267,12 +268,13 @@ let g:pymode_indent=1
 
 " code running
 let g:pymode_run=1
-let g:pymode_run_bind = "<C-S-e>"
+" let g:pymode_run_bind = "<C-S-e>"
+let g:pymode_run_bind = '<leader>r'
 
 " jedi-vim
-let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
-let g:jedi#show_call_signatures=1           " Show call signatures
-let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
+" let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
+" let g:jedi#show_call_signatures=1           " Show call signatures
+" let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 
 " syntastic
 let g:syntastic_always_populate_loc_list=1
