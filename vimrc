@@ -200,8 +200,8 @@ set completeopt-=preview                    " remove omnicompletion dropdown
 let g:virtualenv_directory = '~/venv'
 
 " python executables for different plugins
-let g:pymode_python='python'
-let g:syntastic_python_python_exec='python'
+let g:pymode_python='python3'
+let g:syntastic_python_python_exec='python3'
 " let g:jedi#force_py_version=2
 
 " supertab to work with Jedi-vim autocomletion
@@ -213,9 +213,13 @@ let g:pymode_rope=1
 let g:pymode_rope_completion=1
 let g:pymode_rope_complete_on_dot=1
 let g:pymode_rope_auto_project=1
-let g:pymode_rope_enable_autoimport=0
+let g:pymode_rope_enable_autoimport=1
+let g:pymode_rope_autoimport=1
 let g:pymode_rope_autoimport_generate=1
 let g:pymode_rope_guess_project=1
+let g:pymode_rope_goto_definition_bind = '<leader>b'
+let g:pymode_rope_rename_bind = '<leader>r'
+let g:pymode_rope_autoimport_bind = '<leader>i'
 
 " documentation
 let g:pymode_doc=1
@@ -226,7 +230,7 @@ let g:pymode_lint=1
 
 " virtualenv
 let g:pymode_virtualenv=1
-let g:pymode_virtualenv_path = '~/venv' 
+let g:pymode_virtualenv_path = '/home/maliseiko/venv/robot2' 
 
 " breakpoints
 let g:pymode_breakpoint=1
@@ -292,6 +296,9 @@ let g:syntastic_python_checkers=['flake8', 'pydocstyle', 'python']
 
 "  ACK search options
 noremap <Leader>a :Ack! <cword><cr>
+
+" close buffer on C-x
+nmap <C-x> :bd<CR>
 
 "  Tab switch
 nmap <F9> :tabp<CR>
