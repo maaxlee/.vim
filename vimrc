@@ -47,7 +47,7 @@ call vundle#begin()
 
     " misc
     Plugin 'mileszs/ack.vim'                    " Grep find throug the project
-    " Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
+    Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
     Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
@@ -162,14 +162,6 @@ let NERDTreeWinSize=40
 autocmd VimEnter * if !argc() | NERDTree | endif  " Load NERDTree only if vim is run without arguments
 nmap <F5> :NERDTreeToggle<CR>
 
-"=====================================================
-"" SnipMate settings
-"=====================================================
-" let g:snippets_dir='~/.vim/vim-snippets/snippets'
-" snippets remap
-" imap <C-Tab> <Plug>snipMateNextOrTrigger
-" smap <C-Tab> <Plug>snipMateNextOrTrigger
-
 
 "=====================================================
 "" CtrlP settings
@@ -181,11 +173,6 @@ let g:ctrlp_custom_ignore = {
   \ }
 let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 "=====================================================
-"" Riv.vim settings
-"=====================================================
-"let g:riv_disable_folding=1
-
-"=====================================================
 "" Python settings
 "=====================================================
 "
@@ -193,6 +180,7 @@ let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 set foldmethod=indent
 set foldlevel=99
 autocmd FileType python nnoremap <buffer> <F2> :exec '!python' shellescape(@%, 1)<cr>
+autocmd FileType python set colorcolumn=80
 
 " Preview docstring when folded
 let g:SimpylFold_docstring_preview=1
@@ -208,16 +196,9 @@ let g:syntastic_python_python_exec='python3'
 let g:jedi#force_py_version=3
 
 " supertab to work with Jedi-vim autocomletion
-" autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-" let g:SuperTabDefaultCompletionType = "context"
+autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
+let g:SuperTabDefaultCompletionType = "context"
 
-" highlight 'long' lines (>= 80 symbols) in python files
-" augroup vimrc_autocmds
-"     autocmd!
-"     autocmd FileType python,rst highlight Excess ctermbg=DarkGrey guibg=Black
-"     autocmd FileType python,rst match Excess /\%79v.*/
-"     autocmd FileType python,rst set nowrap
-" augroup END
 
 " Highlight self in python
 augroup python_syntax_extra
@@ -226,7 +207,7 @@ augroup python_syntax_extra
 augroup END
 
 " jedi-vim
-let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
+let g:jedi#popup_select_first=1
 let g:jedi#show_call_signatures=1           " Show call signatures
 let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
 let g:jedi#use_splits_not_buffers = "top"
