@@ -29,6 +29,7 @@ call vundle#begin()
     Plugin 'scrooloose/nerdtree'                " Project and file navigation
     Plugin 'majutsushi/tagbar'                  " Class/module browser
     Plugin 'kien/ctrlp.vim'                     " Fast transitions on project files
+    Plugin 'tmhedberg/SimpylFold'               " Code folding improve
 
     "-------------------=== Other ===-------------------------------
     Plugin 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -36,27 +37,20 @@ call vundle#begin()
     Plugin 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plugin 'flazz/vim-colorschemes'             " Colorschemes
 
-    "-------------------=== Snippets support ===--------------------
-   " Plugin 'garbas/vim-snipmate'                " Snippets manager
-   " Plugin 'MarcWeber/vim-addon-mw-utils'       " dependencies #1
-   " Plugin 'tomtom/tlib_vim'                    " dependencies #2
-   " Plugin 'honza/vim-snippets'                 " snippets repo
-
-
     "-------------------=== Python  ===-----------------------------
-    Plugin 'klen/python-mode'                   " Python mode (docs, refactor, lints...)
-    " Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
+    Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
     Plugin 'scrooloose/syntastic'               " Syntax checking plugin for Vim
     Plugin 'mfukar/robotframework-vim'          " Robotframework support
     Plugin 'airblade/vim-gitgutter'             " Shows diff for Git
+    Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
+    Plugin 'hdima/python-syntax'          " Virtualenv support
 
+    " misc
     Plugin 'mileszs/ack.vim'                    " Grep find throug the project
-    Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
+    " Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
     Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    " Plugin 'tpope/vim-fugitive'
     Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
-    Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
 
 call vundle#end()                           " required
 filetype on
@@ -67,6 +61,7 @@ filetype plugin indent on
 "" General settings
 "=====================================================
 syntax enable                               " syntax highlight
+let python_highlight_all=1
 
 "set t_Co=256                                " set 256 colors
 " below is to allow 24bit colours
@@ -192,6 +187,13 @@ let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 "=====================================================
 "" Python settings
 "=====================================================
+"
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+
+" Preview docstring when folded
+let g:SimpylFold_docstring_preview=1
 
 " omnicomplete
 set completeopt-=preview                    " remove omnicompletion dropdown
@@ -200,61 +202,12 @@ set completeopt-=preview                    " remove omnicompletion dropdown
 let g:virtualenv_directory = '~/venv'
 
 " python executables for different plugins
-let g:pymode_python='python3'
 let g:syntastic_python_python_exec='python3'
-" let g:jedi#force_py_version=2
+let g:jedi#force_py_version=3
 
 " supertab to work with Jedi-vim autocomletion
 " autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 " let g:SuperTabDefaultCompletionType = "context"
-
-" rope
-let g:pymode_rope=1
-let g:pymode_rope_completion=1
-let g:pymode_rope_complete_on_dot=1
-let g:pymode_rope_auto_project=1
-let g:pymode_rope_enable_autoimport=1
-let g:pymode_rope_autoimport=1
-let g:pymode_rope_autoimport_generate=1
-let g:pymode_rope_guess_project=1
-let g:pymode_rope_goto_definition_bind = '<leader>b'
-let g:pymode_rope_rename_bind = '<leader>r'
-let g:pymode_rope_autoimport_bind = '<leader>i'
-
-" documentation
-let g:pymode_doc=1
-let g:pymode_doc_key='K'
-
-" lints
-let g:pymode_lint=1
-
-" virtualenv
-let g:pymode_virtualenv=1
-let g:pymode_virtualenv_path = '/home/maliseiko/venv/robot2' 
-
-" breakpoints
-let g:pymode_breakpoint=1
-let g:pymode_breakpoint_key='<leader>b'
-
-" syntax highlight
-let g:pymode_syntax=1
-let g:pymode_syntax_slow_sync=1
-let g:pymode_syntax_all=1
-let g:pymode_syntax_print_as_function=g:pymode_syntax_all
-let g:pymode_syntax_highlight_async_await=g:pymode_syntax_all
-let g:pymode_syntax_highlight_equal_operator=g:pymode_syntax_all
-let g:pymode_syntax_highlight_stars_operator=g:pymode_syntax_all
-let g:pymode_syntax_highlight_self=g:pymode_syntax_all
-let g:pymode_syntax_indent_errors=g:pymode_syntax_all
-let g:pymode_syntax_string_formatting=g:pymode_syntax_all
-let g:pymode_syntax_space_errors=g:pymode_syntax_all
-let g:pymode_syntax_string_format=g:pymode_syntax_all
-let g:pymode_syntax_string_templates=g:pymode_syntax_all
-let g:pymode_syntax_doctests=g:pymode_syntax_all
-let g:pymode_syntax_builtin_objs=g:pymode_syntax_all
-let g:pymode_syntax_builtin_types=g:pymode_syntax_all
-let g:pymode_syntax_highlight_exceptions=g:pymode_syntax_all
-let g:pymode_syntax_docstrings=g:pymode_syntax_all
 
 " highlight 'long' lines (>= 80 symbols) in python files
 " augroup vimrc_autocmds
@@ -264,21 +217,17 @@ let g:pymode_syntax_docstrings=g:pymode_syntax_all
 "     autocmd FileType python,rst set nowrap
 " augroup END
 
-" code folding
-let g:pymode_folding=0
-
-" pep8 indents
-let g:pymode_indent=1
-
-" code running
-let g:pymode_run=1
-" let g:pymode_run_bind = "<C-S-e>"
-let g:pymode_run_bind = '<leader>r'
+" Highlight self in python
+augroup python_syntax_extra
+  autocmd!
+  autocmd! Syntax python :syn keyword Keyword self
+augroup END
 
 " jedi-vim
-" let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
-" let g:jedi#show_call_signatures=1           " Show call signatures
-" let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
+let g:jedi#popup_select_first=0             " Disable choose first option on autocomplete
+let g:jedi#show_call_signatures=1           " Show call signatures
+let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
+let g:jedi#use_splits_not_buffers = "top"
 
 " syntastic
 let g:syntastic_always_populate_loc_list=1
