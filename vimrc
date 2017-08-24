@@ -43,7 +43,7 @@ call vundle#begin()
     Plugin 'mfukar/robotframework-vim'          " Robotframework support
     Plugin 'airblade/vim-gitgutter'             " Shows diff for Git
     Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
-    Plugin 'hdima/python-syntax'          " Virtualenv support
+    Plugin 'hdima/python-syntax'                " Better python syntax highlight
 
     " misc
     Plugin 'mileszs/ack.vim'                    " Grep find throug the project
@@ -150,6 +150,7 @@ let g:airline_powerline_fonts=1
 "=====================================================
 let g:tagbar_autofocus=0
 let g:tagbar_width=32
+nmap <F6> :TagbarToggle<CR>
 " autocmd BufEnter *.py :call tagbar#autoopen(0)
 autocmd BufWinLeave *.py :TagbarClose
 
@@ -191,6 +192,7 @@ let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
+autocmd FileType python nnoremap <buffer> <F2> :exec '!python' shellescape(@%, 1)<cr>
 
 " Preview docstring when folded
 let g:SimpylFold_docstring_preview=1
