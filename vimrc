@@ -36,6 +36,7 @@ call vundle#begin()
     Plugin 'vim-airline/vim-airline-themes'     " Themes for airline
     Plugin 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plugin 'flazz/vim-colorschemes'             " Colorschemes
+    Plugin 'altercation/vim-colors-solarized'
 
     "-------------------=== Python  ===-----------------------------
     Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
@@ -51,6 +52,9 @@ call vundle#begin()
     Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
+    Plugin 'xolox/vim-misc'                     " Notes dependency
+    Plugin 'xolox/vim-notes'                    " Notes add
+    Plugin 'fatih/vim-go'
 
 call vundle#end()                           " required
 filetype on
@@ -77,10 +81,19 @@ endif
 "colorscheme wombat256mod                    " set color scheme
 "
 " https://github.com/joshdick/onedark.vim
-colorscheme onedark                    " set color scheme
+"
+if has('gui_running')
+    set background=dark
+    colorscheme solarized                    " set color scheme
+    set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
+else
+    colorscheme onedark                    " set color scheme
+endif
 
-"colorscheme molokai                         " set color scheme
-
+" remove toolbars from gvim
+:set guioptions-=T  "remove toolbar
+:set guioptions-=r  "remove right-hand scroll bar
+:set guioptions-=L  "remove left-hand scroll bar
 
 set number                                  " show line numbers
 set relativenumber             " Show relative line numbers"
@@ -111,6 +124,12 @@ set scrolloff=10                            " let 10 lines before/after cursor d
 set clipboard=unnamed                       " use system clipboard
 set mouse=a                                 " add mouse support
 
+" ===================================================
+" Notes setting
+" ===================================================
+"
+nmap <C-I> :Note lead_notes<CR>
+
 "=====================================================
 "" Tabs / Buffers settings
 "=====================================================
@@ -127,9 +146,11 @@ nnoremap <C-H> <C-W><C-H>
 
 vnoremap <Leader>s :sort<CR> " Sort selecter rows by alphovite
 
+" remove trailing whitespaces
+autocmd BufWritePre * %s/\s\+$//e
 " better move blocks of code
-vnoremap < <gv 
-vnoremap > >gv 
+vnoremap < <gv
+vnoremap > >gv
 
 "" Search settings
 "=====================================================
