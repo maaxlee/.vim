@@ -38,6 +38,11 @@ call vundle#begin()
     Plugin 'flazz/vim-colorschemes'             " Colorschemes
     Plugin 'altercation/vim-colors-solarized'
 
+    "--------------------=== Snippets ===-----------------------------------
+    Plugin 'MarcWeber/vim-addon-mw-utils'
+    Plugin 'tomtom/tlib_vim'
+    Plugin 'garbas/vim-snipmate'
+
     "-------------------=== Python  ===-----------------------------
     Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
     Plugin 'scrooloose/syntastic'               " Syntax checking plugin for Vim
@@ -66,6 +71,10 @@ filetype plugin indent on
 "=====================================================
 syntax enable                               " syntax highlight
 let python_highlight_all=1
+
+" highlight hiptest scenarious
+au BufRead,BufNewFile *.hip set filetype=hiptest
+
 
 "set t_Co=256                                " set 256 colors
 " below is to allow 24bit colours
