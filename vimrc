@@ -37,6 +37,7 @@ call vundle#begin()
     Plugin 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plugin 'flazz/vim-colorschemes'             " Colorschemes
     Plugin 'altercation/vim-colors-solarized'
+    Plugin 'rakr/vim-one'
 
     "--------------------=== Snippets ===-----------------------------------
     Plugin 'MarcWeber/vim-addon-mw-utils'
@@ -48,17 +49,18 @@ call vundle#begin()
     Plugin 'scrooloose/syntastic'               " Syntax checking plugin for Vim
     Plugin 'mfukar/robotframework-vim'          " Robotframework support
     Plugin 'airblade/vim-gitgutter'             " Shows diff for Git
+    Plugin 'tpope/vim-fugitive'                 " Git support
     Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
     Plugin 'hdima/python-syntax'                " Better python syntax highlight
+    Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
 
     " misc
     Plugin 'mileszs/ack.vim'                    " Grep find throug the project
-    Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
     Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    Plugin 'szw/vim-tags'                       " Automaticially generate ctags on file save
-    Plugin 'xolox/vim-misc'                     " Notes dependency
-    Plugin 'xolox/vim-notes'                    " Notes add
+    Plugin 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
+
+    "-------------------=== Go  ===-----------------------------
     Plugin 'fatih/vim-go'
 
 call vundle#end()                           " required
@@ -79,14 +81,15 @@ au BufRead,BufNewFile *.hip set filetype=hiptest
 "set t_Co=256                                " set 256 colors
 " below is to allow 24bit colours
 if (empty($TMUX))
-  if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-    set termguicolors
-  endif
+   if (has("nvim"))
+     "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+   endif
+   if (has("termguicolors"))
+       set termguicolors
+   endif
 endif
+
 "colorscheme wombat256mod                    " set color scheme
 "
 " https://github.com/joshdick/onedark.vim
@@ -96,7 +99,9 @@ if has('gui_running')
     colorscheme solarized                    " set color scheme
     set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
 else
-    colorscheme onedark                    " set color scheme
+    " colorscheme onedark                    " set color scheme
+    set background=dark
+    colorscheme one  " set color scheme
 endif
 
 " remove toolbars from gvim
@@ -132,12 +137,6 @@ set scrolloff=10                            " let 10 lines before/after cursor d
 
 set clipboard=unnamed                       " use system clipboard
 set mouse=a                                 " add mouse support
-
-" ===================================================
-" Notes setting
-" ===================================================
-"
-nmap <C-I> :Note lead_notes<CR>
 
 "=====================================================
 "" Tabs / Buffers settings
@@ -203,6 +202,14 @@ let g:ctrlp_custom_ignore = {
   \ }
 let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 "=====================================================
+"" Golang settings
+"=====================================================
+autocmd FileType go nmap <leader>b  <Plug>(go-build)
+autocmd FileType go nmap <Leader>i <Plug>(go-info)
+autocmd FileType go nmap <Leader>d <Plug>(go-decls-dir)
+autocmd FileType go nmap <Leader>r <Plug>(go-rename)
+
+"=====================================================
 "" Python settings
 "=====================================================
 "
@@ -263,11 +270,13 @@ noremap <Leader>a :Ack! <cword><cr>
 nmap <C-x> :bd<CR>
 
 "  Tab switch
-nmap <F9> :tabp<CR>
-nmap <F10> :tabn<CR>
-nmap <C-F9> :bp<CR>
-nmap <C-F10> :bn<CR>
-"nmap <C-c> :q<CR>
+if has('gui_running')
+    nmap <F9> :bp<CR>
+    nmap <F10> :bn<CR>
+else
+    nmap <F9> :bprevious<CR>
+    nmap <F10> :bnext<CR>
+endif
 
 " <F7> Копировать в буфер обмена иксов
 vmap <F7> "+y
@@ -276,3 +285,6 @@ vmap <F8> "+p
 nmap <F8> "+p
 imap <F8> <Esc>"+pi"
 
+
+" Goto buffer
+nnoremap gb :ls<CR>:b<Space>
