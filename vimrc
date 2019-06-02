@@ -204,9 +204,11 @@ let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
 "=====================================================
 "" Golang settings
 "=====================================================
-autocmd FileType go nmap <leader>b  <Plug>(go-build)
-autocmd FileType go nmap <Leader>i <Plug>(go-info)
-autocmd FileType go nmap <Leader>d <Plug>(go-decls-dir)
+autocmd FileType go nmap <M-g>b <Plug>(go-build)
+autocmd FileType go nmap <M-g>i <Plug>(go-info)
+autocmd FileType go nmap <M-g>e <Plug>(go-err-check)
+autocmd FileType go nmap <M-g>t <Plug>(go-imports)
+autocmd FileType go nmap <Leader>d <Plug>(go-def)
 autocmd FileType go nmap <Leader>r <Plug>(go-rename)
 
 "=====================================================
