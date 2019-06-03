@@ -290,3 +290,8 @@ imap <F8> <Esc>"+pi"
 
 " Goto buffer
 nnoremap gb :ls<CR>:b<Space>
+
+" Bufferigator
+"
+let g:buffergator_suppress_keymaps=1
+nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
