@@ -1,85 +1,34 @@
-
-"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-"                                                                              "
-"                       __   _ _ _ __ ___  _ __ ___                            "
-"                       \ \ / / | '_ ` _ \| '__/ __|                           "
-"                        \ V /| | | | | | | | | (__                            "
-"                         \_/ |_|_| |_| |_|_|  \___|                           "
-"                                                                              "
-"                                                                              "
-"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
-"let $vimhome=fnamemodify(resolve(expand("~/.vimrc")), ':p:h')
-"let $vundle=$vimhome."/bundle/Vundle.vim"
-set rtp+=~/.vim/bundle/Vundle.vim
-
-" Be iMproved
-set nocompatible
-
-"=====================================================
-"" Vundle settings
-"=====================================================
-filetype off
-set rtp+=$vundle
-call vundle#begin()
-
-    Plugin 'VundleVim/Vundle.vim'               " let Vundle manage Vundle, required
-
+call plug#begin('~/.vim/plugged')
+    Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
     "-------------------=== Code/Project navigation ===-------------
-    Plugin 'scrooloose/nerdtree'                " Project and file navigation
-    Plugin 'majutsushi/tagbar'                  " Class/module browser
-    Plugin 'kien/ctrlp.vim'                     " Fast transitions on project files
-    Plugin 'tmhedberg/SimpylFold'               " Code folding improve
+    Plug 'scrooloose/nerdtree'                " Project and file navigation
+    Plug 'kien/ctrlp.vim'                     " Fast transitions on project files
 
     "-------------------=== Other ===-------------------------------
-    Plugin 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
-    Plugin 'vim-airline/vim-airline-themes'     " Themes for airline
-    Plugin 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
-    Plugin 'flazz/vim-colorschemes'             " Colorschemes
-    Plugin 'altercation/vim-colors-solarized'
-    Plugin 'rakr/vim-one'
+    Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
+    Plug 'vim-airline/vim-airline-themes'     " Themes for airline
+    Plug 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
+    Plug 'rakr/vim-one'
 
-    "--------------------=== Snippets ===-----------------------------------
-    Plugin 'MarcWeber/vim-addon-mw-utils'
-    Plugin 'tomtom/tlib_vim'
-    Plugin 'garbas/vim-snipmate'
 
-    "-------------------=== Python  ===-----------------------------
-    Plugin 'davidhalter/jedi-vim'               " Jedi-vim autocomplete plugin
-    Plugin 'scrooloose/syntastic'               " Syntax checking plugin for Vim
-    Plugin 'mfukar/robotframework-vim'          " Robotframework support
-    Plugin 'airblade/vim-gitgutter'             " Shows diff for Git
-    Plugin 'tpope/vim-fugitive'                 " Git support
-    Plugin 'jmcantrell/vim-virtualenv'          " Virtualenv support
-    Plugin 'hdima/python-syntax'                " Better python syntax highlight
-    Plugin 'ervandew/supertab'                  " Use TAB for autocomplete fo jedi-vim
+    Plug 'mfukar/robotframework-vim'          " Robotframework support
+    Plug 'airblade/vim-gitgutter'             " Shows diff for Git
+    Plug 'tpope/vim-fugitive'                 " Git support
 
     " misc
-    Plugin 'mileszs/ack.vim'                    " Grep find throug the project
-    Plugin 'tomtom/tcomment_vim'                " Comment/uncomment by block
-    Plugin 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    Plugin 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
+    Plug 'mileszs/ack.vim'                    " Grep find throug the project
+    Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
+    Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
+    Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-    "-------------------=== Go  ===-----------------------------
-    Plugin 'fatih/vim-go'
+call plug#end()
 
-call vundle#end()                           " required
 filetype on
 filetype plugin on
 filetype plugin indent on
-
-"=====================================================
-"" General settings
-"=====================================================
 syntax enable                               " syntax highlight
-let python_highlight_all=1
 
-" highlight hiptest scenarious
-au BufRead,BufNewFile *.hip set filetype=hiptest
-
-
-"set t_Co=256                                " set 256 colors
-" below is to allow 24bit colours
 if (empty($TMUX))
    if (has("nvim"))
      "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
@@ -90,10 +39,6 @@ if (empty($TMUX))
    endif
 endif
 
-"colorscheme wombat256mod                    " set color scheme
-"
-" https://github.com/joshdick/onedark.vim
-"
 if has('gui_running')
     set background=dark
     colorscheme solarized                    " set color scheme
@@ -161,7 +106,6 @@ vnoremap < <gv
 vnoremap > >gv
 
 "" Search settings
-"=====================================================
 set incsearch	                            " incremental search
 set hlsearch	                            " highlight search results
 nnoremap <F3> :set hlsearch!<CR>
@@ -173,15 +117,6 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
 let g:airline_powerline_fonts=1
-
-"=====================================================
-"" TagBar settings
-"=====================================================
-let g:tagbar_autofocus=0
-let g:tagbar_width=32
-nmap <F6> :TagbarToggle<CR>
-" autocmd BufEnter *.py :call tagbar#autoopen(0)
-autocmd BufWinLeave *.py :TagbarClose
 
 "=====================================================
 "" NERDTree settings
@@ -201,70 +136,6 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
-"=====================================================
-"" Golang settings
-"=====================================================
-autocmd FileType go nmap <M-g>b <Plug>(go-build)
-autocmd FileType go nmap <M-g>i <Plug>(go-info)
-autocmd FileType go nmap <M-g>e <Plug>(go-err-check)
-autocmd FileType go nmap <M-g>t <Plug>(go-imports)
-autocmd FileType go nmap <Leader>d <Plug>(go-def)
-autocmd FileType go nmap <Leader>r <Plug>(go-rename)
-
-"=====================================================
-"" Python settings
-"=====================================================
-"
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
-autocmd FileType python nnoremap <buffer> <F2> :exec '!python' shellescape(@%, 1)<cr>
-autocmd FileType python set colorcolumn=80
-
-" Preview docstring when folded
-let g:SimpylFold_docstring_preview=1
-
-" omnicomplete
-set completeopt-=preview                    " remove omnicompletion dropdown
-
-" virtualenv settings
-let g:virtualenv_directory = '~/venv'
-
-" python executables for different plugins
-let g:syntastic_python_python_exec='python3'
-let g:jedi#force_py_version=3
-
-" supertab to work with Jedi-vim autocomletion
-autocmd FileType python let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
-let g:SuperTabDefaultCompletionType = "context"
-
-
-" Highlight self in python
-augroup python_syntax_extra
-  autocmd!
-  autocmd! Syntax python :syn keyword Keyword self
-augroup END
-
-" jedi-vim
-let g:jedi#popup_select_first=1
-let g:jedi#show_call_signatures=1           " Show call signatures
-let g:jedi#popup_on_dot=1                   " Enable autocomplete on dot
-let g:jedi#use_splits_not_buffers = "top"
-
-" syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_enable_signs=1
-let g:syntastic_check_on_wq=0
-let g:syntastic_aggregate_errors=1
-let g:syntastic_loc_list_height=5
-let g:syntastic_error_symbol='X'
-let g:syntastic_style_error_symbol='X'
-let g:syntastic_warning_symbol='x'
-let g:syntastic_style_warning_symbol='x'
-let g:syntastic_python_checkers=['flake8', 'pydocstyle', 'python']
-
-
 "  ACK search options
 noremap <Leader>a :Ack! <cword><cr>
 
@@ -287,11 +158,143 @@ vmap <F8> "+p
 nmap <F8> "+p
 imap <F8> <Esc>"+pi"
 
-
-" Goto buffer
-nnoremap gb :ls<CR>:b<Space>
-
 " Bufferigator
 "
 let g:buffergator_suppress_keymaps=1
 nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
+
+
+"=====================================================
+"" Language Server settings
+"=====================================================
+" o if hidden is not set, TextEdit might fail.
+set hidden
+
+" Some servers have issues with backup files, see #649
+set nobackup
+set nowritebackup
+
+" Better display for messages
+set cmdheight=2
+
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add diagnostic info for https://github.com/itchyny/lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'cocstatus': 'coc#status'
+      \ },
+      \ }
+
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
