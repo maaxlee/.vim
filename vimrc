@@ -9,6 +9,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'vim-airline/vim-airline-themes'     " Themes for airline
     Plug 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plug 'rakr/vim-one'
+    Plug 'hdima/python-syntax'                " Better python sysntax highlight
 
 
     Plug 'mfukar/robotframework-vim'          " Robotframework support
@@ -20,7 +21,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    " Plug 'fatih/vim-go'
 
 call plug#end()
 
@@ -117,6 +118,20 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#formatter='unique_tail'
 let g:airline_powerline_fonts=1
+let g:airline#extensions#coc#enabled = 1
+
+function! StatusDiagnostic() abort
+  let info = get(b:, 'coc_diagnostic_info', {})
+  if empty(info) | return '' | endif
+  let msgs = []
+  if get(info, 'error', 0)
+    call add(msgs, 'E' . info['error'])
+  endif
+  if get(info, 'warning', 0)
+    call add(msgs, 'W' . info['warning'])
+  endif
+  return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+endfunction
 
 "=====================================================
 "" NERDTree settings
@@ -161,7 +176,12 @@ imap <F8> <Esc>"+pi"
 " Bufferigator
 "
 let g:buffergator_suppress_keymaps=1
-nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
+
+" Highlight self in python
+augroup python_syntax_extra
+  autocmd!
+  autocmd! Syntax python :syn keyword Keyword self
+augroup END  noremap <silent> <s-tab> :BuffergatorOpen<CR>
 
 
 "=====================================================
@@ -178,7 +198,7 @@ set nowritebackup
 set cmdheight=2
 
 " You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
+" set updatetime=300
 
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
