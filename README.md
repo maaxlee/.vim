@@ -39,4 +39,5 @@ gy Type definition
 <leader>rn rename
 <space>a - enable linter
 K - function documentation
+<leader>f - format selected
 ```

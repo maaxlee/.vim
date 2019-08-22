@@ -2,7 +2,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
     "-------------------=== Code/Project navigation ===-------------
     Plug 'scrooloose/nerdtree'                " Project and file navigation
-    Plug 'kien/ctrlp.vim'                     " Fast transitions on project files
+    " Plug 'kien/ctrlp.vim'                     " Fast transitions on project files
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -143,14 +144,10 @@ nmap <F5> :NERDTreeToggle<CR>
 
 
 "=====================================================
-"" CtrlP settings
+"" Searcg (fzf and Ack)
 "=====================================================
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll|pyc|html|log|txt)$',
-  \ 'link': 'some_bad_symbolic_links',
-  \ }
-let g:ctrlp_root_markers = ['.p4ignore', '.gitignore']
+" Map FZF to ctrl p
+noremap <silent> <C-p> :FZF<CR>
 "  ACK search options
 noremap <Leader>a :Ack! <cword><cr>
 
@@ -174,14 +171,15 @@ nmap <F8> "+p
 imap <F8> <Esc>"+pi"
 
 " Bufferigator
-"
 let g:buffergator_suppress_keymaps=1
+nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
 
 " Highlight self in python
 augroup python_syntax_extra
   autocmd!
   autocmd! Syntax python :syn keyword Keyword self
 augroup END  noremap <silent> <s-tab> :BuffergatorOpen<CR>
+
 
 
 "=====================================================
@@ -264,10 +262,6 @@ augroup mygroup
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap for do codeAction of current line
 nmap <leader>ac  <Plug>(coc-codeaction)
