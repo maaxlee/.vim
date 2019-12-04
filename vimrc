@@ -32,15 +32,17 @@ filetype plugin on
 filetype plugin indent on
 syntax enable                               " syntax highlight
 
-if (empty($TMUX))
-   if (has("nvim"))
-     "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-   endif
-   if (has("termguicolors"))
-       set termguicolors
-   endif
-endif
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+" if (empty($TMUX))
+"    if (has("nvim"))
+"      "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+"      let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+"    endif
+"    if (has("termguicolors"))
+"        set termguicolors
+"    endif
+" endif
 
 if has('gui_running')
     set background=dark
