@@ -11,6 +11,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plug 'rakr/vim-one'
     Plug 'hdima/python-syntax'                " Better python sysntax highlight
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 
     Plug 'mfukar/robotframework-vim'          " Robotframework support
@@ -112,6 +113,12 @@ set incsearch	                            " incremental search
 set hlsearch	                            " highlight search results
 nnoremap <F3> :set hlsearch!<CR>
 
+" Neovim terminal
+set splitbelow
+" nnoremap <leader>t :below new term://zsh<CR>
+nnoremap <leader>t :10split term://zsh<CR>
+tnoremap <Esc> <C-\><C-n>
+
 "=====================================================
 "" AirLine settings
 "=====================================================
@@ -152,7 +159,7 @@ noremap <silent> <C-p> :FZF<CR>
 noremap <Leader>a :Ack! <cword><cr>
 
 " close buffer on C-x
-nmap <C-x> :bd<CR>
+nmap <C-x> :bd!<CR>
 
 "  Tab switch
 if has('gui_running')
@@ -312,3 +319,21 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+
+" vimgo
+
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_types = 1
+let g:go_auto_sameids = 1
+let g:go_fmt_command = "goimports"
+let g:go_def_mapping_enabled = 0
+
+
+autocmd FileType go nmap <leader>r  <Plug>(go-referrers)
