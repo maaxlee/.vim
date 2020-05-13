@@ -1,29 +1,29 @@
 call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+    "
     "-------------------=== Code/Project navigation ===-------------
-    Plug 'scrooloose/nerdtree'                " Project and file navigation
-    " Plug 'kien/ctrlp.vim'                     " Fast transitions on project files
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf.vim'
+
+    "-------------------=== Languages ===-------------------------------
+    Plug 'mfukar/robotframework-vim'          " Robotframework support
+    Plug 'hdima/python-syntax'                " Better python sysntax highlight
+    Plug 'mgedmin/python-imports.vim'         " Python autoimports
+    Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
+    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
     Plug 'vim-airline/vim-airline-themes'     " Themes for airline
     Plug 'tpope/vim-surround'                 " Parentheses, brackets, quotes, XML tags, and more
     Plug 'rakr/vim-one'
-    Plug 'hdima/python-syntax'                " Better python sysntax highlight
-    Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-
-    Plug 'mfukar/robotframework-vim'          " Robotframework support
     Plug 'airblade/vim-gitgutter'             " Shows diff for Git
     Plug 'tpope/vim-fugitive'                 " Git support
 
     " misc
-    Plug 'mileszs/ack.vim'                    " Grep find throug the project
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
-    " Plug 'fatih/vim-go'
 
 call plug#end()
 
@@ -143,22 +143,34 @@ function! StatusDiagnostic() abort
   return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
 endfunction
 
-"=====================================================
-"" NERDTree settings
-"=====================================================
-let NERDTreeIgnore=['\.pyc$', '\.pyo$']     " Ignore files in NERDTree
-let NERDTreeWinSize=40
-autocmd VimEnter * if !argc() | NERDTree | endif  " Load NERDTree only if vim is run without arguments
-nmap <F5> :NERDTreeToggle<CR>
-
 
 "=====================================================
 "" Searcg (fzf and Ack)
 "=====================================================
 " Map FZF to ctrl p
 noremap <silent> <C-p> :FZF<CR>
-"  ACK search options
-noremap <Leader>a :Ack! <cword><cr>
+
+"Get Files
+command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
+
+" Get text in files with Rg
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+"   \   fzf#vim#with_preview(), <bang>0)
+
+let g:rg_command = '
+  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,robot,sh,conf,yaml,yml,txt}"
+  \ -g "!{.git,node_modules,vendor,__pycache__}/*" '
+
+command! -bang -nargs=* RG call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=* RGC call fzf#vim#grep(g:rg_command .shellescape(expand('<cword>')), 1, fzf#vim#with_preview(), <bang>0)
+"
+"  Grep for file under cursor using ripgrep and fzf
+noremap <Leader>a :RGC <CR>
+
 
 " close buffer on C-x
 nmap <C-x> :bd!<CR>
@@ -182,12 +194,16 @@ imap <F8> <Esc>"+pi"
 " Bufferigator
 let g:buffergator_suppress_keymaps=1
 nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
+noremap <silent> <s-tab> :BuffergatorOpen<CR>
 
 " Highlight self in python
 augroup python_syntax_extra
   autocmd!
   autocmd! Syntax python :syn keyword Keyword self
-augroup END  noremap <silent> <s-tab> :BuffergatorOpen<CR>
+augroup END
+
+" pydocstring
+let g:pydocstring_formatter = 'sphinx'
 
 
 
@@ -339,3 +355,33 @@ let g:go_def_mapping_enabled = 0
 
 
 autocmd FileType go nmap <leader>r  <Plug>(go-referrers)
+
+"=====================================================
+"" CoC Explorer settings
+"=====================================================
+" nmap <space>e :CocCommand explorer<CR>
+nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources buffer-,file+<CR>
+
+
+let g:coc_explorer_global_presets = {
+\   '.vim': {
+\      'root-uri': '~/.vim',
+\   },
+\   'floating': {
+\      'position': 'floating',
+\   },
+\   'floatingLeftside': {
+\      'position': 'floating',
+\      'floating-position': 'left-center',
+\      'floating-width': 50,
+\   },
+\   'floatingRightside': {
+\      'position': 'floating',
+\      'floating-position': 'left-center',
+\      'floating-width': 50,
+\   },
+\   'simplify': {
+\     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
+
