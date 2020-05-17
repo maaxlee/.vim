@@ -24,6 +24,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
+    Plug 'voldikss/vim-floaterm'
 
 call plug#end()
 
@@ -96,7 +97,6 @@ set switchbuf=useopen
 set laststatus=2
 " nmap <F9> :bprev<CR>
 " nmap <F10> :bnext<CR>
-nmap <silent> <leader>q :SyntasticCheck # <CR> :bp <BAR> bd #<CR>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
@@ -116,10 +116,9 @@ set hlsearch	                            " highlight search results
 nnoremap <F3> :set hlsearch!<CR>
 
 " Neovim terminal
-set splitbelow
-" nnoremap <leader>t :below new term://zsh<CR>
-nnoremap <leader>t :10split term://zsh<CR>
-tnoremap <Esc> <C-\><C-n>
+" set splitbelow
+" nnoremap <leader>t :10split term://zsh<CR>
+" tnoremap <Esc> <C-\><C-n>
 
 "=====================================================
 "" AirLine settings
@@ -149,6 +148,7 @@ endfunction
 "=====================================================
 " Map FZF to ctrl p
 noremap <silent> <C-p> :FZF<CR>
+noremap <silent> <C-b> :Buffers<CR>
 
 "Get Files
 command! -bang -nargs=? -complete=dir Files
@@ -202,10 +202,18 @@ augroup python_syntax_extra
   autocmd! Syntax python :syn keyword Keyword self
 augroup END
 
-" pydocstring
+"=====================================================
+"" Pydocstring
+"=====================================================
 let g:pydocstring_formatter = 'sphinx'
+nmap <silent> <C-_> <Plug>(pydocstring)
 
-
+"=====================================================
+"" Floaterm terminal
+"=====================================================
+let g:floaterm_keymap_toggle = '<leader>t'
+let g:floaterm_autoclose=1
+let g:floaterm_autoinsert=1
 
 "=====================================================
 "" Language Server settings
