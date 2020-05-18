@@ -205,8 +205,8 @@ augroup END
 "=====================================================
 "" Pydocstring
 "=====================================================
-let g:pydocstring_formatter = 'sphinx'
-nmap <silent> <C-_> <Plug>(pydocstring)
+let g:pydocstring_formatter = 'google'
+nmap <silent> <leader>ds <Plug>(pydocstring)
 
 "=====================================================
 "" Floaterm terminal

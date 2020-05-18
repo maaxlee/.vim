@@ -52,8 +52,22 @@ K - function documentation
 <leader>f - format selected
 ```
 
+## Pydocstring
+Generate docstring
+```
+<leader>ds
+```
+
 ## File explorer
 ```
 <space>e run explorer
 h - collapse node
 ```
+
+# Tips and tricks
+Fix vendoring for golang projects
+
+```
+export GOFLAGS="-mod=vendor"
+```
+and then run vim
