@@ -1,0 +1,15 @@
+set relativenumber
+set commentary
+set surround
+
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
+map <leader>rn :action RenameElement<CR>
+map <C-p> :action GotoFile<CR>
+map gr :action GotoDeclaration<CR>
+map <F10> :action NextTab<CR>
+map <F9> :action PreviousTab<CR>
