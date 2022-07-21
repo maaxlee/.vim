@@ -13,3 +13,4 @@ map <C-p> :action GotoFile<CR>
 map gr :action GotoDeclaration<CR>
 map <F10> :action NextTab<CR>
 map <F9> :action PreviousTab<CR>
+nnoremap <C-t> :action Back<CR>

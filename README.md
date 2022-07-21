@@ -21,22 +21,34 @@
       "command": "gopls",
       "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
       "filetypes": ["go"]
+    },
+    "robot": {
+        "command": "robotframework_ls",
+        "filetypes": ["robot"]
     }
   },
   "explorer.previewAction.onHover": false,
   "explorer.icon.enableNerdfont": true,
-  "explorer.keyMappings": {
+  "explorer.keyMappings.global": {
     "<cr>": ["expandable?", "expand", "open"],
     "v": "open:vsplit"
   },
-  "python.venvPath": "/home/maliseiko/venv",
-  "python.jediEnabled": false
+  "clangd.enabled": true,
+  "python.venvPath": "/home/maaxlee/venv",
+  "python.jediEnabled": false,
+  "python.envFile": "${workspaceFolder}/.env",
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.lintOnSave": true,
+  "python.linting.flake8Args": ["--max-line-length=119"],
+  "python.linting.pylintEnabled": false,
+  "http.proxy": "http://myproxy:8080"
 }
 ```
-5. Install language servers
+5. Robot framework support (only python >=3.7)
 
 ```
-pip install python-language-server
+pip install robotframework-lsp
 ```
 
 # Keymaps

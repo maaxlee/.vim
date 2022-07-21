@@ -2,8 +2,9 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
     "
     "-------------------=== Code/Project navigation ===-------------
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'wookayin/fzf-ripgrep.vim'
 
     "-------------------=== Languages ===-------------------------------
     Plug 'mfukar/robotframework-vim'          " Robotframework support
@@ -11,6 +12,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'mgedmin/python-imports.vim'         " Python autoimports
     Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    Plug 'psf/black', { 'branch': 'stable' }
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -34,32 +36,10 @@ filetype plugin indent on
 syntax enable                               " syntax highlight
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set background=dark
+colorscheme one  " set color scheme
+
 set termguicolors
-" if (empty($TMUX))
-"    if (has("nvim"))
-"      "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-"      let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-"    endif
-"    if (has("termguicolors"))
-"        set termguicolors
-"    endif
-" endif
-
-if has('gui_running')
-    set background=dark
-    colorscheme solarized                    " set color scheme
-    set guifont=Ubuntu\ Mono\ derivative\ Powerline\ 12
-else
-    " colorscheme onedark                    " set color scheme
-    set background=dark
-    colorscheme one  " set color scheme
-endif
-
-" remove toolbars from gvim
-:set guioptions-=T  "remove toolbar
-:set guioptions-=r  "remove right-hand scroll bar
-:set guioptions-=L  "remove left-hand scroll bar
-
 set number                                  " show line numbers
 set relativenumber             " Show relative line numbers"
 set ruler
@@ -154,24 +134,6 @@ noremap <silent> <C-b> :Buffers<CR>
 command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
 
-" Get text in files with Rg
-" command! -bang -nargs=* Rg
-"   \ call fzf#vim#grep(
-"   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-"   \   fzf#vim#with_preview(), <bang>0)
-
-let g:rg_command = '
-  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf,robot,sh,conf,yaml,yml,txt}"
-  \ -g "!{.git,node_modules,vendor,__pycache__}/*" '
-
-command! -bang -nargs=* RG call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
-command! -bang -nargs=* RGC call fzf#vim#grep(g:rg_command .shellescape(expand('<cword>')), 1, fzf#vim#with_preview(), <bang>0)
-"
-"  Grep for file under cursor using ripgrep and fzf
-noremap <Leader>a :RGC <CR>
-
-
 " close buffer on C-x
 nmap <C-x> :bd!<CR>
 
@@ -201,6 +163,10 @@ augroup python_syntax_extra
   autocmd!
   autocmd! Syntax python :syn keyword Keyword self
 augroup END
+"=====================================================
+"" Black
+"=====================================================
+let g:black_linelength = 119
 
 "=====================================================
 "" Pydocstring
@@ -357,7 +323,7 @@ let g:go_highlight_methods = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_types = 1
-let g:go_auto_sameids = 1
+let g:go_auto_sameids = 0
 let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 0
 
@@ -368,7 +334,9 @@ autocmd FileType go nmap <leader>r  <Plug>(go-referrers)
 "" CoC Explorer settings
 "=====================================================
 " nmap <space>e :CocCommand explorer<CR>
-nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources buffer-,file+<CR>
+" nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources buffer-,file+<CR>
+nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources file+<CR>
+nmap <space>r :CocCommand explorer --quit-on-open --preset floating --sources buffer+<CR>
 
 
 let g:coc_explorer_global_presets = {
