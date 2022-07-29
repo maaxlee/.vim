@@ -28,7 +28,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
     Plug 'voldikss/vim-floaterm'
 
-call plug#end()
+    " colorschemes
+    Plug 'tomasr/molokai'
+    " Plug 'joshdick/onedark.vim'
+    Plug 'navarasu/onedark.nvim'
+
+    call plug#end()
 
 filetype on
 filetype plugin on
@@ -37,7 +42,8 @@ syntax enable                               " syntax highlight
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set background=dark
-colorscheme one  " set color scheme
+" colorscheme one  " set color scheme
+colorscheme onedark   " set color scheme
 
 set termguicolors
 set number                                  " show line numbers
@@ -250,10 +256,6 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-" Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
@@ -261,11 +263,6 @@ augroup mygroup
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
 nmap <silent> <TAB> <Plug>(coc-range-select)
@@ -297,20 +294,9 @@ let g:lightline = {
 " Using CocList
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 
 " vimgo
@@ -328,7 +314,9 @@ let g:go_fmt_command = "goimports"
 let g:go_def_mapping_enabled = 0
 
 
-autocmd FileType go nmap <leader>r  <Plug>(go-referrers)
+autocmd FileType go nmap <leader>rr  <Plug>(go-referrers)
+autocmd FileType go nmap <space>m <Plug>(go-metalinter)
+autocmd FileType go nmap <leader>rt  <Plug>(go-test-func)
 
 "=====================================================
 "" CoC Explorer settings
