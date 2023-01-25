@@ -73,7 +73,15 @@ Generate docstring
 ## File explorer
 ```
 <space>e run explorer
+<space>r run for open buffers
 h - collapse node
+```
+
+
+## Symbols list
+
+```
+<space>vv open Sympols list by vista
 ```
 
 # Tips and tricks

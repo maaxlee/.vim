@@ -21,12 +21,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'rakr/vim-one'
     Plug 'airblade/vim-gitgutter'             " Shows diff for Git
     Plug 'tpope/vim-fugitive'                 " Git support
+    Plug 'tyru/open-browser.vim'              " Plantuml dependency
+    Plug 'weirongxu/plantuml-previewer.vim'   " Plantuml viewer
+    Plug 'liuchengxu/vista.vim'               " View and search LSP symbols, tags in Vim/NeoVim.
 
     " misc
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
     Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
     Plug 'voldikss/vim-floaterm'
+    Plug 'ojroques/vim-oscyank', {'branch': 'main'}  " Plugin to copy anywhere (ssh)
 
     " colorschemes
     Plug 'tomasr/molokai'
@@ -153,7 +157,8 @@ else
 endif
 
 " <F7> Копировать в буфер обмена иксов
-vmap <F7> "+y
+" vmap <F7> "+y
+vnoremap <F7> :OSCYank<CR>
 " " <F8> Вставить из буфера обмена иксов<
 vmap <F8> "+p
 nmap <F8> "+p
@@ -349,3 +354,28 @@ let g:coc_explorer_global_presets = {
 \   }
 \ }
 
+
+" Fix fir newer neovim version
+function! CheckBackSpace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+  " Insert <tab> when previous text is space, refresh completion if not.
+inoremap <silent><expr> <TAB>
+	\ coc#pum#visible() ? coc#pum#next(1):
+	\ CheckBackSpace() ? "\<Tab>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#_select_confirm()
+				\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+"
+"=====================================================
+"" Vista sympols navigation
+"=====================================================
+let g:vista_default_executive = 'coc'
+" Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
+let g:vista#renderer#enable_icon = 0
+
+nmap <space>vv :Vista coc<CR>
