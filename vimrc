@@ -19,7 +19,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'hdima/python-syntax'                " Better python sysntax highlight
     Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    Plug 'psf/black', { 'branch': 'stable' }
+    Plug 'tell-k/vim-autopep8'
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -167,7 +167,7 @@ endif
 
 " <F7> Копировать в буфер обмена иксов
 " vmap <F7> "+y
-vnoremap <F7> :OSCYank<CR>
+vnoremap <F7> :OSCYankVisual<CR>
 " " <F8> Вставить из буфера обмена иксов<
 vmap <F8> "+p
 nmap <F8> "+p
@@ -184,9 +184,12 @@ augroup python_syntax_extra
   autocmd! Syntax python :syn keyword Keyword self
 augroup END
 "=====================================================
-"" Black
+"" Autopep8
 "=====================================================
-let g:black_linelength = 119
+let g:autopep8_disable_show_diff=1
+let g:autopep8_max_line_length=120
+nnoremap <leader>af :Autopep8<CR>
+nnoremap <leader>ar :'<,'>Autopep8<CR>
 
 "=====================================================
 "" Pydocstring
