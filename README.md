@@ -2,7 +2,7 @@
 
 1. Install
 - *neovim*
-- (vim-plug)[https://github.com/junegunn/vim-plug]
+- [vim-plug](https://github.com/junegunn/vim-plug)
 - *npm* installed
 - *ripgrep*
 - *fzf*
@@ -29,20 +29,19 @@ gi Implementation
 gr References
 <space>D Type defenition
 <space>rn Rename
-<space>a Diagnosis list
-]d Next diagnosis item
-[d Next diagnosis item
-
 ```
 
-## Pydocstring
-Generate docstring
+## Python
+## Git
+GitGutter
+
 ```
-<leader>ds
+<leader>hp Preview Hunk
+<leader>hn Next Hunk
 ```
 
 ## File explorer
-NerdTree <C-t>
+NerdTree <space>e
 
 ## Symbols list
 ```

@@ -17,9 +17,7 @@ call plug#begin('~/.vim/plugged')
     "-------------------=== Languages ===-------------------------------
     Plug 'mfukar/robotframework-vim'          " Robotframework support
     Plug 'hdima/python-syntax'                " Better python sysntax highlight
-    Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    Plug 'tell-k/vim-autopep8'
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -33,13 +31,11 @@ call plug#begin('~/.vim/plugged')
     " misc
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
     Plug 'voldikss/vim-floaterm'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}  " Plugin to copy anywhere (ssh)
 
     " colorschemes
     Plug 'tomasr/molokai'
-    " Plug 'joshdick/onedark.vim'
     Plug 'navarasu/onedark.nvim'
 
     call plug#end()
@@ -101,7 +97,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-vnoremap <Leader>s :sort<CR> " Sort selecter rows by alphovite
+vnoremap <leader>s :sort<CR> " Sort selecter rows by alphovite
 
 " remove trailing whitespaces
 autocmd BufWritePre * %s/\s\+$//e
@@ -173,29 +169,11 @@ vmap <F8> "+p
 nmap <F8> "+p
 imap <F8> <Esc>"+pi"
 
-" Bufferigator
-let g:buffergator_suppress_keymaps=1
-nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
-noremap <silent> <s-tab> :BuffergatorOpen<CR>
-
 " Highlight self in python
 augroup python_syntax_extra
   autocmd!
   autocmd! Syntax python :syn keyword Keyword self
 augroup END
-"=====================================================
-"" Autopep8
-"=====================================================
-let g:autopep8_disable_show_diff=1
-let g:autopep8_max_line_length=120
-nnoremap <leader>af :Autopep8<CR>
-nnoremap <leader>ar :'<,'>Autopep8<CR>
-
-"=====================================================
-"" Pydocstring
-"=====================================================
-let g:pydocstring_formatter = 'google'
-nmap <silent> <leader>ds <Plug>(pydocstring)
 
 "=====================================================
 "" Floaterm terminal
@@ -203,6 +181,12 @@ nmap <silent> <leader>ds <Plug>(pydocstring)
 let g:floaterm_keymap_toggle = '<leader>t'
 let g:floaterm_autoclose=1
 let g:floaterm_autoinsert=1
+
+"=====================================================
+"" Gitgutter
+"=====================================================
+nnoremap <leader>hp :GitGutterPreviewHunk<CR>
+nnoremap <leader>hn :GitGutterNextHunk<CR>
 
 "=====================================================
 "" Vimgo
