@@ -1,18 +1,23 @@
 call plug#begin('~/.vim/plugged')
-    Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
     "
+    Plug 'neovim/nvim-lspconfig'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'saadparwaiz1/cmp_luasnip'
+
     "-------------------=== Code/Project navigation ===-------------
     Plug 'junegunn/fzf.vim'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'wookayin/fzf-ripgrep.vim'
+    Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
 
     "-------------------=== Languages ===-------------------------------
     Plug 'mfukar/robotframework-vim'          " Robotframework support
     Plug 'hdima/python-syntax'                " Better python sysntax highlight
-    Plug 'mgedmin/python-imports.vim'         " Python autoimports
-    Plug 'heavenshell/vim-pydocstring', { 'do': 'make install' }
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-    Plug 'psf/black', { 'branch': 'stable' }
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -21,20 +26,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'rakr/vim-one'
     Plug 'airblade/vim-gitgutter'             " Shows diff for Git
     Plug 'tpope/vim-fugitive'                 " Git support
-    Plug 'tyru/open-browser.vim'              " Plantuml dependency
-    Plug 'weirongxu/plantuml-previewer.vim'   " Plantuml viewer
     Plug 'liuchengxu/vista.vim'               " View and search LSP symbols, tags in Vim/NeoVim.
 
     " misc
     Plug 'tomtom/tcomment_vim'                " Comment/uncomment by block
     Plug 'jiangmiao/auto-pairs'               " Double qutes/braces etc
-    Plug 'jeetsukumaran/vim-buffergator'      " Navigating between buffers
     Plug 'voldikss/vim-floaterm'
     Plug 'ojroques/vim-oscyank', {'branch': 'main'}  " Plugin to copy anywhere (ssh)
 
     " colorschemes
     Plug 'tomasr/molokai'
-    " Plug 'joshdick/onedark.vim'
     Plug 'navarasu/onedark.nvim'
 
     call plug#end()
@@ -79,6 +80,10 @@ set scrolloff=10                            " let 10 lines before/after cursor d
 set clipboard=unnamed                       " use system clipboard
 set mouse=a                                 " add mouse support
 
+
+" Add nvim-lsp specific settings in lua format
+lua require('lspsettings')
+
 "=====================================================
 "" Tabs / Buffers settings
 "=====================================================
@@ -92,7 +97,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-vnoremap <Leader>s :sort<CR> " Sort selecter rows by alphovite
+vnoremap <leader>s :sort<CR> " Sort selecter rows by alphovite
 
 " remove trailing whitespaces
 autocmd BufWritePre * %s/\s\+$//e
@@ -158,32 +163,17 @@ endif
 
 " <F7> Копировать в буфер обмена иксов
 " vmap <F7> "+y
-vnoremap <F7> :OSCYank<CR>
+vnoremap <F7> :OSCYankVisual<CR>
 " " <F8> Вставить из буфера обмена иксов<
 vmap <F8> "+p
 nmap <F8> "+p
 imap <F8> <Esc>"+pi"
-
-" Bufferigator
-let g:buffergator_suppress_keymaps=1
-nnoremap <silent> <s-tab> :BuffergatorOpen<CR>
-noremap <silent> <s-tab> :BuffergatorOpen<CR>
 
 " Highlight self in python
 augroup python_syntax_extra
   autocmd!
   autocmd! Syntax python :syn keyword Keyword self
 augroup END
-"=====================================================
-"" Black
-"=====================================================
-let g:black_linelength = 119
-
-"=====================================================
-"" Pydocstring
-"=====================================================
-let g:pydocstring_formatter = 'google'
-nmap <silent> <leader>ds <Plug>(pydocstring)
 
 "=====================================================
 "" Floaterm terminal
@@ -193,119 +183,14 @@ let g:floaterm_autoclose=1
 let g:floaterm_autoinsert=1
 
 "=====================================================
-"" Language Server settings
+"" Gitgutter
 "=====================================================
-" o if hidden is not set, TextEdit might fail.
-set hidden
+nnoremap <leader>hp :GitGutterPreviewHunk<CR>
+nnoremap <leader>hn :GitGutterNextHunk<CR>
 
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=2
-
-" You will have bad experience for diagnostic messages when it's default 4000.
-" set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Use <tab> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <S-TAB> <Plug>(coc-range-select-backword)
-
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` to fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add diagnostic info for https://github.com/itchyny/lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ }
-
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Show commands
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-
-
-" vimgo
-
+"=====================================================
+"" Vimgo
+"=====================================================
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_extra_types = 1
 let g:go_highlight_fields = 1
@@ -323,59 +208,16 @@ autocmd FileType go nmap <leader>rr  <Plug>(go-referrers)
 autocmd FileType go nmap <space>m <Plug>(go-metalinter)
 autocmd FileType go nmap <leader>rt  <Plug>(go-test-func)
 
-"=====================================================
-"" CoC Explorer settings
-"=====================================================
-" nmap <space>e :CocCommand explorer<CR>
-" nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources buffer-,file+<CR>
-nmap <space>e :CocCommand explorer --quit-on-open --preset floating --sources file+<CR>
-nmap <space>r :CocCommand explorer --quit-on-open --preset floating --sources buffer+<CR>
+" NERDTree settings
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <space>e :NERDTreeToggle<CR>
 
-
-let g:coc_explorer_global_presets = {
-\   '.vim': {
-\      'root-uri': '~/.vim',
-\   },
-\   'floating': {
-\      'position': 'floating',
-\   },
-\   'floatingLeftside': {
-\      'position': 'floating',
-\      'floating-position': 'left-center',
-\      'floating-width': 50,
-\   },
-\   'floatingRightside': {
-\      'position': 'floating',
-\      'floating-position': 'left-center',
-\      'floating-width': 50,
-\   },
-\   'simplify': {
-\     'file.child.template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
-\   }
-\ }
-
-
-" Fix fir newer neovim version
-function! CheckBackSpace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-  " Insert <tab> when previous text is space, refresh completion if not.
-inoremap <silent><expr> <TAB>
-	\ coc#pum#visible() ? coc#pum#next(1):
-	\ CheckBackSpace() ? "\<Tab>" :
-    \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#_select_confirm()
-				\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-"
 "=====================================================
 "" Vista sympols navigation
 "=====================================================
-let g:vista_default_executive = 'coc'
+let g:vista_default_executive = 'nvim_lsp'
 " Ensure you have installed some decent font to show these pretty symbols, then you can enable icon for the kind.
 let g:vista#renderer#enable_icon = 0
 
-nmap <space>vv :Vista coc<CR>
+nmap <space>vv :Vista nvim_lsp<CR>
