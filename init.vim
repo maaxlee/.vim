@@ -1,4 +1,4 @@
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
     "
     Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/nvim-cmp'
@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'hrsh7th/cmp-buffer'
     Plug 'L3MON4D3/LuaSnip'
     Plug 'saadparwaiz1/cmp_luasnip'
+    Plug 'ray-x/lsp_signature.nvim'
 
     "-------------------=== Code/Project navigation ===-------------
     Plug 'junegunn/fzf.vim'
@@ -16,8 +17,9 @@ call plug#begin('~/.vim/plugged')
 
     "-------------------=== Languages ===-------------------------------
     Plug 'mfukar/robotframework-vim'          " Robotframework support
-    Plug 'hdima/python-syntax'                " Better python sysntax highlight
+    " Plug 'hdima/python-syntax'                " Better python sysntax highlight
     Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     "-------------------=== Other ===-------------------------------
     Plug 'bling/vim-airline'                  " Lean & mean status/tnmap ,t :tabnew<CR>abline for vim
@@ -170,10 +172,10 @@ nmap <F8> "+p
 imap <F8> <Esc>"+pi"
 
 " Highlight self in python
-augroup python_syntax_extra
-  autocmd!
-  autocmd! Syntax python :syn keyword Keyword self
-augroup END
+" augroup python_syntax_extra
+"   autocmd!
+"   autocmd! Syntax python :syn keyword Keyword self
+" augroup END
 
 "=====================================================
 "" Floaterm terminal
