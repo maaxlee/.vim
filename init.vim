@@ -154,6 +154,8 @@ command! -bang -nargs=? -complete=dir Files
 " close buffer on C-x
 nmap <C-x> :bd!<CR>
 
+nmap <C-s> :w<CR>
+
 "  Tab switch
 if has('gui_running')
     nmap <F9> :bp<CR>
@@ -163,9 +165,9 @@ else
     nmap <F10> :bnext<CR>
 endif
 
-" <F7> Копировать в буфер обмена иксов
-" vmap <F7> "+y
-vnoremap <F7> :OSCYankVisual<CR>
+" <F7> Copy to Xwindow buffer (for local and WSL)
+vmap <F7> "+y
+" vnoremap <F7> :OSCYankVisual<CR>
 " " <F8> Вставить из буфера обмена иксов<
 vmap <F8> "+p
 nmap <F8> "+p
